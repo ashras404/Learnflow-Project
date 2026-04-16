@@ -1,0 +1,15 @@
+# Secrets
+.env
+
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Build files
+dist/
+build/
+
+# IDE files
+.vscode/
+.DS_Store
