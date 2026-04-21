@@ -3,32 +3,13 @@ import { useContext } from 'react';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import './index.css';
 
-// Components
-import Sidebar from './components/Navbar';
+// Layout & Pages
+import Layout from './components/Layout';
 import Login from './pages/Login';
 import Tasks from './pages/Tasks';
 import Notes from './pages/Notes';
 import Study from './pages/Study';
 import AIStudio from './pages/AIStudio';
-
-// A small sub-component to handle the dynamic layout
-const LayoutWrapper = ({ children }) => {
-    const { user } = useContext(AuthContext);
-    
-    return (
-        <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0f0f12' }}>
-            {user && <Sidebar />}
-            <main style={{ 
-                flex: 1, 
-                marginLeft: user ? '240px' : '0px', 
-                padding: user ? '40px' : '0px',
-                transition: 'margin 0.3s ease'
-            }}>
-                {children}
-            </main>
-        </div>
-    );
-};
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -39,7 +20,7 @@ function App() {
     return (
         <AuthProvider>
             <Router>
-                <LayoutWrapper>
+                <Layout>
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/" element={<Navigate to="/tasks" />} />
@@ -49,7 +30,7 @@ function App() {
                         <Route path="/study" element={<ProtectedRoute><Study /></ProtectedRoute>} />
                         <Route path="/ai" element={<ProtectedRoute><AIStudio /></ProtectedRoute>} />
                     </Routes>
-                </LayoutWrapper>
+                </Layout>
             </Router>
         </AuthProvider>
     );

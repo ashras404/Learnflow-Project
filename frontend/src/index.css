@@ -1,7 +1,13 @@
-/* frontend/src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-  background-color: #0f0f12 !important;
-  color: #e2e8f0 !important;
+  --bg-main: #0f1015;     /* The deep navy background */
+  --bg-card: #1c1d26;     /* The slightly lighter card background */
+  --bg-hover: #2a2b36;    /* Hover states */
+  --primary: #6366f1;     /* The electric purple accent */
+  --text-main: #f8fafc;   /* Crisp white text */
+  --text-muted: #94a3b8;  /* Slate gray for secondary text */
+  --border: #2e303f;      /* Subtle borders */
 }
 
 * {
@@ -11,14 +17,24 @@
 }
 
 body {
-  margin: 0;
-  background-color: #0f0f12 !important;
-  color: #e2e8f0 !important;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-#root {
-  background-color: #0f0f12 !important;
-  min-height: 100vh;
+/* Custom Scrollbar to match the premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: #2e303f;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
