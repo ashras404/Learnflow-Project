@@ -1,13 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 :root {
-  --bg-main: #0f1015;     /* The deep navy background */
-  --bg-card: #1c1d26;     /* The slightly lighter card background */
-  --bg-hover: #2a2b36;    /* Hover states */
-  --primary: #6366f1;     /* The electric purple accent */
-  --text-main: #f8fafc;   /* Crisp white text */
-  --text-muted: #94a3b8;  /* Slate gray for secondary text */
-  --border: #2e303f;      /* Subtle borders */
+  --bg-main: #0f1015; /* The deep navy background */
+  --bg-card: #1c1d26; /* The slightly lighter card background */
+  --bg-hover: #2a2b36; /* Hover states */
+  --primary: #6366f1; /* The electric purple accent */
+  --text-main: #f8fafc; /* Crisp white text */
+  --text-muted: #94a3b8; /* Slate gray for secondary text */
+  --border: #2e303f; /* Subtle borders */
+}
+
+body.light-mode {
+  --bg-main: #f8fafc; /* Very light slate background */
+  --bg-card: #ffffff; /* Pure white cards */
+  --bg-hover: #f1f5f9; /* Light gray hover */
+  --primary: #4f46e5; /* Darker indigo for better contrast on white */
+  --text-main: #0f172a; /* Dark slate for text */
+  --text-muted: #64748b; /* Medium slate for secondary text */
+  --border: #e2e8f0; /* Light gray borders */
+}
+
+/* Add a smooth transition so the color swap looks premium */
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 * {
@@ -19,7 +36,7 @@
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
 }

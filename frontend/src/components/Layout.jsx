@@ -1,10 +1,26 @@
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Layout = ({ children }) => {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    // 1. Initialize theme from local storage (default to dark)
+    const [isLightMode, setIsLightMode] = useState(() => {
+        return localStorage.getItem('theme') === 'light';
+    });
+
+    // 2. Toggle class on the body tag whenever the state changes
+    useEffect(() => {
+        if (isLightMode) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+        }
+    }, [isLightMode]);
 
     if (!user) return <>{children}</>;
 
@@ -18,21 +34,13 @@ const Layout = ({ children }) => {
     ];
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)' }}>
+        <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)', transition: 'background-color 0.3s ease' }}>
             
             {/* SIDEBAR */}
             <aside style={{
-                width: '260px',
-                backgroundColor: 'var(--bg-main)',
-                borderRight: '1px solid var(--border)',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'fixed',
-                height: '100vh',
-                padding: '24px 16px',
-                zIndex: 50
+                width: '260px', backgroundColor: 'var(--bg-main)', borderRight: '1px solid var(--border)',
+                display: 'flex', flexDirection: 'column', position: 'fixed', height: '100vh', padding: '24px 16px', zIndex: 50, transition: 'all 0.3s ease'
             }}>
-                {/* Logo */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0 8px', marginBottom: '40px' }}>
                     <div style={{ backgroundColor: 'var(--primary)', color: 'white', width: '32px', height: '32px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '18px' }}>
                         A
@@ -42,19 +50,17 @@ const Layout = ({ children }) => {
                     </h2>
                 </div>
 
-                {/* Navigation Links */}
                 <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     {navItems.map((item) => (
                         <NavLink 
-                            key={item.name} 
-                            to={item.path}
+                            key={item.name} to={item.path}
                             style={({ isActive }) => ({
                                 display: 'flex', alignItems: 'center', gap: '12px',
                                 padding: '12px 16px', borderRadius: '12px',
                                 textDecoration: 'none', fontSize: '15px', fontWeight: '500',
-                                color: isActive ? '#ffffff' : 'var(--text-muted)',
-                                backgroundColor: isActive ? '#6366f122' : 'transparent',
-                                border: isActive ? '1px solid #6366f144' : '1px solid transparent',
+                                color: isActive ? 'var(--primary)' : 'var(--text-muted)',
+                                backgroundColor: isActive ? 'var(--primary)22' : 'transparent',
+                                border: isActive ? '1px solid var(--primary)44' : '1px solid transparent',
                                 transition: 'all 0.2s ease'
                             })}
                         >
@@ -70,34 +76,43 @@ const Layout = ({ children }) => {
                 
                 {/* TOP BAR */}
                 <header style={{
-                    height: '80px',
-                    padding: '0 40px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderBottom: '1px solid var(--border)',
-                    backgroundColor: 'var(--bg-main)'
+                    height: '80px', padding: '0 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    borderBottom: '1px solid var(--border)', backgroundColor: 'var(--bg-main)', transition: 'all 0.3s ease'
                 }}>
-                    {/* Search Bar */}
                     <div style={{ position: 'relative', width: '400px' }}>
                         <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}>🔍</span>
                         <input 
-                            type="text" 
-                            placeholder="Search anything..." 
+                            type="text" placeholder="Search anything..." 
                             style={{
                                 width: '100%', padding: '12px 16px 12px 48px',
                                 backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)',
-                                borderRadius: '30px', color: 'var(--text-main)', outline: 'none', fontSize: '14px'
+                                borderRadius: '30px', color: 'var(--text-main)', outline: 'none', fontSize: '14px', transition: 'all 0.3s ease'
                             }}
                         />
                     </div>
 
-                    {/* Right Icons (Notifications + Avatar) */}
+                    {/* Right Icons (Toggle + Notifications + Avatar) */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                        
+                        {/* 3. The New Theme Toggle Button */}
+                        <button 
+                            onClick={() => setIsLightMode(!isLightMode)}
+                            title="Toggle Light/Dark Mode"
+                            style={{ 
+                                background: 'transparent', border: 'none', fontSize: '20px', 
+                                cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                transition: 'transform 0.2s ease'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                            {isLightMode ? '🌙' : '☀️'}
+                        </button>
+
                         <span style={{ color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }}>🔔</span>
+                        
                         <div 
-                            onClick={logout}
-                            title="Click to logout"
+                            onClick={logout} title="Click to logout"
                             style={{
                                 width: '36px', height: '36px', borderRadius: '50%',
                                 backgroundColor: '#a855f7', color: 'white',
